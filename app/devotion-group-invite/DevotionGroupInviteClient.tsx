@@ -5,16 +5,36 @@ import { useEffect } from 'react';
 export default function DevotionGroupInviteClient({ code }: { code: string }) {
   const cleanCode = code.replace(/\s+/g, '');
   const appLink = `honara7ty://devotion-group-invite?code=${encodeURIComponent(cleanCode)}`;
+  const playStoreUrl =
+    'https://play.google.com/store/apps/details?id=com.honara7ty.app';
 
   useEffect(() => {
     if (!cleanCode) return;
 
-    const timer = window.setTimeout(() => {
-      window.location.href = appLink;
-    }, 450);
+    const isAndroid = /Android/i.test(window.navigator.userAgent);
+    let didLeavePage = false;
 
-    return () => window.clearTimeout(timer);
-  }, [appLink, cleanCode]);
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        didLeavePage = true;
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    window.location.href = appLink;
+
+    const fallbackTimer = window.setTimeout(() => {
+      if (!didLeavePage && isAndroid) {
+        window.location.href = playStoreUrl;
+      }
+    }, 1600);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.clearTimeout(fallbackTimer);
+    };
+  }, [appLink, cleanCode, playStoreUrl]);
 
   return (
     <main
@@ -112,6 +132,25 @@ export default function DevotionGroupInviteClient({ code }: { code: string }) {
           فتح التطبيق
         </a>
 
+        <a
+          href={playStoreUrl}
+          style={{
+            marginTop: 10,
+            minHeight: 44,
+            borderRadius: 14,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#EEF2F8',
+            color: '#0A1124',
+            textDecoration: 'none',
+            fontSize: 14,
+            fontWeight: 900,
+          }}
+        >
+          تحميل التطبيق من Google Play
+        </a>
+
         <p
           style={{
             margin: '14px 0 0',
@@ -120,7 +159,8 @@ export default function DevotionGroupInviteClient({ code }: { code: string }) {
             lineHeight: 1.6,
           }}
         >
-          لو التطبيق متسطب، هيفتح تلقائيًا خلال لحظات.
+          لو التطبيق متسطب، هيفتح تلقائيًا خلال لحظات. لو مش متسطب على
+          أندرويد، هتتحول لصفحة Google Play.
         </p>
       </section>
     </main>
