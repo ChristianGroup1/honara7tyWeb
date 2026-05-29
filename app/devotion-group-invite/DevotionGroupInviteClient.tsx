@@ -1,4 +1,3 @@
-// app/devotion-group-invite/DevotionGroupInviteClient.tsx
 'use client';
 
 import { useEffect } from 'react';
@@ -12,16 +11,118 @@ export default function DevotionGroupInviteClient({ code }: { code: string }) {
 
     const timer = window.setTimeout(() => {
       window.location.href = appLink;
-    }, 250);
+    }, 450);
 
     return () => window.clearTimeout(timer);
   }, [appLink, cleanCode]);
 
   return (
-    <main style={{ padding: 24, textAlign: 'center' }}>
-      <h1>دعوة جروب الخلوة</h1>
-      <p>اضغط فتح التطبيق للانضمام للجروب.</p>
-      <a href={appLink}>فتح التطبيق</a>
+    <main
+      dir="rtl"
+      style={{
+        minHeight: '100vh',
+        margin: 0,
+        padding: 24,
+        display: 'grid',
+        placeItems: 'center',
+        background:
+          'radial-gradient(circle at top, #FFF8E5 0, #F2F4F8 38%, #E9EDF5 100%)',
+        fontFamily:
+          'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        color: '#0A1124',
+      }}
+    >
+      <section
+        style={{
+          width: '100%',
+          maxWidth: 430,
+          background: '#FFFFFF',
+          border: '1px solid rgba(10,17,36,0.08)',
+          borderRadius: 24,
+          padding: 24,
+          boxShadow: '0 18px 45px rgba(10,17,36,0.12)',
+          textAlign: 'center',
+        }}
+      >
+        <div
+          style={{
+            width: 74,
+            height: 74,
+            borderRadius: 24,
+            margin: '0 auto 16px',
+            display: 'grid',
+            placeItems: 'center',
+            background: '#FFF4D6',
+            color: '#C9A84C',
+            fontSize: 34,
+            fontWeight: 900,
+          }}
+        >
+          ✚
+        </div>
+
+        <h1 style={{ margin: '0 0 8px', fontSize: 24, lineHeight: 1.35 }}>
+          دعوة جروب الخلوة
+        </h1>
+
+        <p
+          style={{
+            margin: '0 auto 18px',
+            maxWidth: 330,
+            color: '#5F6874',
+            fontSize: 15,
+            lineHeight: 1.7,
+          }}
+        >
+          اتدعيت تدخل جروب خلوة على هنار حتي. افتح التطبيق عشان تشوف الدعوة
+          وتقرر تنضم أو لا.
+        </p>
+
+        {cleanCode ? (
+          <div
+            style={{
+              marginBottom: 16,
+              padding: '10px 14px',
+              borderRadius: 999,
+              background: '#F6F8FC',
+              border: '1px solid rgba(10,17,36,0.08)',
+              fontWeight: 900,
+              letterSpacing: 1,
+            }}
+          >
+            {cleanCode}
+          </div>
+        ) : null}
+
+        <a
+          href={appLink}
+          style={{
+            minHeight: 48,
+            borderRadius: 14,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#0A1124',
+            color: '#FFFFFF',
+            textDecoration: 'none',
+            fontSize: 15,
+            fontWeight: 900,
+          }}
+        >
+          فتح التطبيق
+        </a>
+
+        <p
+          style={{
+            margin: '14px 0 0',
+            color: '#7A818B',
+            fontSize: 13,
+            lineHeight: 1.6,
+          }}
+        >
+          لو التطبيق متسطب، هيفتح تلقائيًا خلال لحظات.
+        </p>
+      </section>
     </main>
   );
 }
