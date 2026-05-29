@@ -82,7 +82,7 @@ export default function DevotionGroupInviteClient({ code }: { code: string }) {
         </div>
 
         <h1 style={{ margin: '0 0 8px', fontSize: 24, lineHeight: 1.35 }}>
-          دعوة جروب الخلوة
+          دعوة لمجموعة الخلوة
         </h1>
 
         <p
@@ -94,7 +94,7 @@ export default function DevotionGroupInviteClient({ code }: { code: string }) {
             lineHeight: 1.7,
           }}
         >
-          اتدعيت تدخل جروب خلوة على هنار حتي. افتح التطبيق عشان تشوف الدعوة
+          اتدعيت تدخل مجموعة خلوة على هنار حتي. افتح التطبيق عشان تشوف الدعوة
           وتقرر تنضم أو لا.
         </p>
 
