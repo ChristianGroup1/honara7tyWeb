@@ -1,7 +1,8 @@
+import type { Metadata, Viewport } from "next";
 import { Cairo } from "next/font/google";
-import { Metadata, Viewport } from "next";
-import { SITE_URL } from "./lib/site";
+import type { ReactNode } from "react";
 import Analytics from "./components/Analytics";
+import { SITE_URL } from "./lib/site";
 import "./globals.css";
 
 const cairo = Cairo({
@@ -10,6 +11,8 @@ const cairo = Cairo({
   display: "swap",
   variable: "--font-cairo",
 });
+
+const META_PIXEL_ID = "1822233249133996";
 
 export const viewport: Viewport = {
   themeColor: "#0a1124",
@@ -88,38 +91,69 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
-      <script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1822233249133996');
-fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1822233249133996&ev=PageView&noscript=1"
-/></noscript>
-      </head>
-      <body className={cairo.variable}>
-
         <script
+          id="meta-pixel"
           dangerouslySetInnerHTML={{
-            __html:
-              "try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.setAttribute('data-theme','dark')}}catch(e){}",
+            __html: `
+              (function (window, document) {
+                if (window.fbq) return;
+
+                var fbq = window.fbq = function () {
+                  if (fbq.callMethod) {
+                    fbq.callMethod.apply(fbq, arguments);
+                  } else {
+                    fbq.queue.push(arguments);
+                  }
+                };
+
+                if (!window._fbq) window._fbq = fbq;
+                fbq.push = fbq;
+                fbq.loaded = true;
+                fbq.version = "2.0";
+                fbq.queue = [];
+
+                var script = document.createElement("script");
+                script.async = true;
+                script.src = "https://connect.facebook.net/en_US/fbevents.js";
+                var firstScript = document.getElementsByTagName("script")[0];
+                firstScript.parentNode.insertBefore(script, firstScript);
+              })(window, document);
+
+              window.fbq("init", "${META_PIXEL_ID}");
+              window.fbq("track", "PageView");
+            `,
           }}
         />
+      </head>
+      <body className={cairo.variable}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var theme = localStorage.getItem("theme");
+                if (
+                  theme === "dark" ||
+                  (!theme && matchMedia("(prefers-color-scheme: dark)").matches)
+                ) {
+                  document.documentElement.setAttribute("data-theme", "dark");
+                }
+              } catch (error) {}
+            `,
+          }}
+        />
+        <noscript>
+          <img
+            height={1}
+            width={1}
+            style={{ display: "none" }}
+            src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
+            alt=""
+          />
+        </noscript>
         {children}
         <Analytics />
       </body>
