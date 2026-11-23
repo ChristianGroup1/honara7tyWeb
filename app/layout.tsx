@@ -12,6 +12,7 @@ const cairo = Cairo({
   variable: "--font-cairo",
 });
 
+const GTM_ID = "GTM-KGMT7HMK";
 const META_PIXEL_ID = "1822233249133996";
 
 export const viewport: Viewport = {
@@ -96,6 +97,25 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
         <script
+          id="google-tag-manager"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function () {
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                  "gtm.start": Date.now(),
+                  event: "gtm.js",
+                });
+
+                var script = document.createElement("script");
+                script.async = true;
+                script.src = "https://www.googletagmanager.com/gtm.js?id=${GTM_ID}";
+                document.head.appendChild(script);
+              })();
+            `,
+          }}
+        />
+        <script
           id="meta-pixel"
           dangerouslySetInnerHTML={{
             __html: `
@@ -119,8 +139,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 var script = document.createElement("script");
                 script.async = true;
                 script.src = "https://connect.facebook.net/en_US/fbevents.js";
-                var firstScript = document.getElementsByTagName("script")[0];
-                firstScript.parentNode.insertBefore(script, firstScript);
+                document.head.appendChild(script);
               })(window, document);
 
               window.fbq("init", "${META_PIXEL_ID}");
@@ -130,6 +149,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body className={cairo.variable}>
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${GTM_ID}`}
+            height={0}
+            width={0}
+            style={{ display: "none", visibility: "hidden" }}
+            title="Google Tag Manager"
+          />
+        </noscript>
         <script
           dangerouslySetInnerHTML={{
             __html: `
